@@ -1,8 +1,8 @@
 // import 'dart:html';
-import 'package:flu/screens/listItens.dart';
-import 'package:flu/screens/weather.dart';
+import 'package:climabra/screens/listItens.dart';
+import 'package:climabra/screens/weather.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flu/screens/login.dart';
+import 'package:climabra/screens/login.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -26,8 +27,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
-        '/wather': (context) => Wather(title: ''),
-        '/listCities': (context) => ListItens(title: ''),
+        '/wather': (context) => const Wather(title: 'Clima'),
+        '/listCities': (context) => const ListItens(title: ''),
       },
     );
   }

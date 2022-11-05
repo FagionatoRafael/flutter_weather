@@ -18,9 +18,17 @@ class API {
     return jsonDecode(response.body);
   }
 
-  Future getCities() async {
+  Future getUfs() async {
     var url =
-        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/35/municipios?orderBy=nome";
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome";
+    var response = await http.get(Uri.parse(url));
+    print(response.statusCode);
+    return jsonDecode(response.body);
+  }
+
+  Future getCities(uf) async {
+    var url =
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/$uf/municipios?orderBy=nome";
     var response = await http.get(Uri.parse(url));
     print(response.statusCode);
     return jsonDecode(response.body);

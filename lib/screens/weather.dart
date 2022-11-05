@@ -1,6 +1,8 @@
 import 'dart:convert';
-// import 'package:http/http.dart' as http;
-import 'package:flu/api/api.dart';
+import 'dart:convert';
+// import 'dart:html';
+import 'package:climabra/api/api.dart';
+import 'package:climabra/screens/listItens.dart';
 import 'package:flutter/material.dart';
 
 class City {
@@ -21,7 +23,8 @@ class Wather extends StatefulWidget {
 }
 
 class _WatherState extends State<Wather> {
-  String nome = '';
+  String nomeCity = 'Araçatuba';
+  String nomeUf = 'SP';
   String climaMax = '';
   String climaMin = '';
   String error = '';
@@ -45,25 +48,10 @@ class _WatherState extends State<Wather> {
     }
   }
 
-  void buildDropdown() async {
-    var res1 = await API('').getCities();
-    for (var el in res1) {
-      setState(() {
-        _dropdownValue = res1[0]['nome'];
-        if (el['nome'] != null &&
-            el['nome'] != '' &&
-            res1[0]['nome'] != el['nome']) {
-          itens.add(el['nome'].toString());
-        }
-      });
-    }
-    print(itens);
-  }
-
   void onPressButton() async {
-    if (nome != '') {
-      var res = await API(nome).getWeatherByCity();
-      if (res['results']['city_name'] == nome) {
+    if (nomeCity != '') {
+      var res = await API(nomeCity).getWeatherByCity();
+      if (res['results']['city_name'] == nomeCity) {
         setState(() {
           climaMax = "Max: ${res['results']['forecast'][0]['max'].toString()}C";
           climaMin = "Min: ${res['results']['forecast'][0]['min'].toString()}C";
@@ -85,16 +73,31 @@ class _WatherState extends State<Wather> {
     }
   }
 
+  void navigateToList(id) {
+    Navigator.pushReplacementNamed(context, '/listCities',
+        arguments: {"id": id, "nameUf": nomeUf});
+  }
+
   @override
   Widget build(BuildContext context) {
-    Object? data = ModalRoute.of(context)?.settings.arguments;
-    // if(!data != null) {
-    //   String name = data?.name;
-    // }
+    dynamic? data = ModalRoute.of(context)?.settings.arguments;
+    // String name = "Araçatuba";
+    if (data != null) {
+      FocusScope.of(context).requestFocus(FocusNode());
+      print(data);
+      setState(() {
+        if (data["nameCity"] != null) {
+          nomeCity = data["nameCity"];
+        }
+        if (data["nameUf"] != null) {
+          nomeUf = data["nameUf"];
+        }
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('algum texto'),
+        title: const Text('Clima'),
       ),
       body: Center(
         child: Padding(
@@ -120,10 +123,23 @@ class _WatherState extends State<Wather> {
                 margin: const EdgeInsets.only(top: 10.0),
                 child: TextField(
                   obscureText: true,
+                  onTap: () => navigateToList(1),
                   onChanged: (value) => {},
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'aloo',
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: nomeUf,
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: TextField(
+                  obscureText: true,
+                  onTap: () => navigateToList(0),
+                  onChanged: (value) => {},
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: nomeCity,
                   ),
                 ),
               ),

@@ -1,4 +1,4 @@
-import 'package:flu/screens/weather.dart';
+import 'package:climabra/screens/weather.dart';
 import 'package:flutter/material.dart';
 
 import '../api/api.dart';
@@ -14,45 +14,70 @@ class ListItens extends StatefulWidget {
 
 class _ListItensState extends State<ListItens> {
   List<String> itens = [];
+  int id = 0;
+  String nomeUf = 'SP';
 
   @override
   void initState() {
     super.initState();
-    buildDropdown();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //    Future.delayed(Duration(seconds: 3), () => yourFunction());
-    // });
   }
 
   void buildDropdown() async {
-    var res1 = await API('').getCities();
-    for (var el in res1) {
-      setState(() {
-        // _dropdownValue = res1[0]['nome'];
-        if (el['nome'] != null &&
-            el['nome'] != '' &&
-            res1[0]['nome'] != el['nome']) {
-          itens.add(el['nome']);
-        }
-      });
-      // print(el['nome']);
+    dynamic? data = ModalRoute.of(context)?.settings.arguments;
+    var res1;
+    if (id == 0) {
+      res1 = await API('').getCities(nomeUf);
+      for (var el in res1) {
+        setState(() {
+          // _dropdownValue = res1[0]['nome'];
+          if (el['nome'] != null &&
+              el['nome'] != '' &&
+              res1[0]['nome'] != el['nome']) {
+            itens.add(el['nome']);
+          }
+        });
+        // print(el['nome']);
+      }
+    } else {
+      res1 = await API('').getUfs();
+      for (var el in res1) {
+        setState(() {
+          // _dropdownValue = res1[0]['nome'];
+          if (el['sigla'] != null &&
+              el['sigla'] != '' &&
+              res1[0]['sigla'] != el['sigla']) {
+            itens.add(el['sigla']);
+          }
+        });
+        // print(el['sigla']);
+      }
     }
   }
 
   void onPressButton(String name) {
-    Navigator.pushReplacementNamed(context, '/wather',
-        arguments: {"name": name});
+    if (id == 0) {
+      Navigator.pushReplacementNamed(context, '/wather',
+          arguments: {"nameCity": name, "nameUf": nomeUf});
+    } else {
+      Navigator.pushReplacementNamed(context, '/wather',
+          arguments: {"nameUf": name});
+    }
     print(name);
   }
 
   @override
   Widget build(BuildContext context) {
-    // buildDropdown();
+    dynamic? data = ModalRoute.of(context)?.settings.arguments;
+    if (data != null) {
+      print(data);
+      setState(() {
+        id = data["id"];
+        nomeUf = data["nameUf"];
+      });
+      buildDropdown();
+    }
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(

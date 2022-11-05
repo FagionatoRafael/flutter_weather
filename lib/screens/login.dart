@@ -1,4 +1,4 @@
-import 'package:flu/screens/weather.dart';
+import 'package:climabra/screens/weather.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('algo'),
+        title: const Text('Login'),
       ),
       body: Center(
         child: Padding(
