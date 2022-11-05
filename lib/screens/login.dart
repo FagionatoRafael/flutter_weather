@@ -43,34 +43,49 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('algum texto'),
+        title: Text('algo'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              obscureText: false,
-              onChanged: (value) => onChangeName(value),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Nome',
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: TextField(
+                  obscureText: false,
+                  onChanged: (value) => onChangeName(value),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Nome',
+                  ),
+                ),
               ),
-            ),
-            TextField(
-              obscureText: true,
-              onChanged: (value) => onChangePass(value),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Senha',
+              Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: TextField(
+                  obscureText: true,
+                  onChanged: (value) => onChangePass(value),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Senha',
+                  ),
+                ),
               ),
-            ),
-            OutlinedButton(
-              onPressed: onPressButton,
-              child: const Text('Entrar'),
-            ),
-            Text(error),
-          ],
+              Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    fixedSize: Size(300, 50),
+                  ),
+                  onPressed: onPressButton,
+                  child: const Text('Entrar'),
+                ),
+              ),
+              Text(error),
+            ],
+          ),
         ),
       ),
     );

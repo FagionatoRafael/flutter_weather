@@ -1,4 +1,6 @@
-import 'dart:html';
+// import 'dart:html';
+import 'package:flu/screens/listItens.dart';
+import 'package:flu/screens/weather.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flu/screens/login.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Login(title: 'Flutter Demo Home Page'),
+      home: const Login(
+        title: '',
+      ),
+      initialRoute: '/login',
+      routes: {
+        '/wather': (context) => Wather(title: ''),
+        '/listCities': (context) => ListItens(title: ''),
+      },
     );
   }
 }

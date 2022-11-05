@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,6 +13,14 @@ class API {
     var url =
         "https://api.hgbrasil.com/weather?format=json-cors&key=$token&city_name=$nome";
     print(url);
+    var response = await http.get(Uri.parse(url));
+    print(response.statusCode);
+    return jsonDecode(response.body);
+  }
+
+  Future getCities() async {
+    var url =
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/35/municipios?orderBy=nome";
     var response = await http.get(Uri.parse(url));
     print(response.statusCode);
     return jsonDecode(response.body);
