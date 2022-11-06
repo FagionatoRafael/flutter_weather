@@ -1,5 +1,5 @@
 // import 'dart:html';
-import 'package:climabra/screens/listItens.dart';
+import 'package:climabra/screens/listItem.dart';
 import 'package:climabra/screens/weather.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:climabra/screens/login.dart';
@@ -27,8 +27,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
+        'login': (context) => const Login(title: 'alo'),
         '/wather': (context) => const Wather(title: 'Clima'),
-        '/listCities': (context) => const ListItens(title: ''),
+        '/list': (context) => Lista()
       },
     );
   }

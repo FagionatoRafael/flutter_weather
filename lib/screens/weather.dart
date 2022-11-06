@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:convert';
 // import 'dart:html';
 import 'package:climabra/api/api.dart';
-import 'package:climabra/screens/listItens.dart';
 import 'package:flutter/material.dart';
 
 class City {
@@ -28,24 +27,15 @@ class _WatherState extends State<Wather> {
   String climaMax = '';
   String climaMin = '';
   String error = '';
-  String _dropdownValue = "Adamantina";
-  List<String> itens = [];
+  List<dynamic> itens = [];
 
   @override
   void initState() {
     super.initState();
-    // buildDropdown();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //    Future.delayed(Duration(seconds: 3), () => yourFunction());
-    // });
   }
 
   void dropDownCallBack(String? selectedValue) {
-    if (selectedValue is String) {
-      setState(() {
-        _dropdownValue = selectedValue;
-      });
-    }
+    if (selectedValue is String) {}
   }
 
   void onPressButton() async {
@@ -74,7 +64,7 @@ class _WatherState extends State<Wather> {
   }
 
   void navigateToList(id) {
-    Navigator.pushReplacementNamed(context, '/listCities',
+    Navigator.pushReplacementNamed(context, '/list',
         arguments: {"id": id, "nameUf": nomeUf});
   }
 
@@ -84,7 +74,6 @@ class _WatherState extends State<Wather> {
     // String name = "Araçatuba";
     if (data != null) {
       FocusScope.of(context).requestFocus(FocusNode());
-      print(data);
       setState(() {
         if (data["nameCity"] != null) {
           nomeCity = data["nameCity"];
