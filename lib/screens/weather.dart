@@ -24,8 +24,11 @@ class Wather extends StatefulWidget {
 class _WatherState extends State<Wather> {
   String nomeCity = 'Araçatuba';
   String nomeUf = 'SP';
+  String nome = '';
+  String id_user = '';
   String climaMax = '';
   String climaMin = '';
+  String climaNow = '';
   String error = '';
   List<dynamic> itens = [];
 
@@ -34,19 +37,20 @@ class _WatherState extends State<Wather> {
     super.initState();
   }
 
-  void dropDownCallBack(String? selectedValue) {
-    if (selectedValue is String) {}
-  }
-
   void onPressButton() async {
     if (nomeCity != '') {
       var res = await API(nomeCity).getWeatherByCity();
       if (res['results']['city_name'] == nomeCity) {
+        print(res['results']['temp']);
         setState(() {
-          climaMax = "Max: ${res['results']['forecast'][0]['max'].toString()}C";
-          climaMin = "Min: ${res['results']['forecast'][0]['min'].toString()}C";
+          climaNow = "${res['results']['temp'].toString()}C°";
+          climaMax =
+              "Max: ${res['results']['forecast'][0]['max'].toString()}C°";
+          climaMin =
+              "Min: ${res['results']['forecast'][0]['min'].toString()}C°";
           error = '';
         });
+        API('').updateCidades(id_user, nomeCity);
       } else {
         setState(() {
           climaMax = '';
@@ -63,9 +67,18 @@ class _WatherState extends State<Wather> {
     }
   }
 
+  void navigateToHistorico() {
+    Navigator.pushReplacementNamed(context, '/listHis',
+        arguments: {"nome": nome, "id_user": id_user});
+  }
+
   void navigateToList(id) {
-    Navigator.pushReplacementNamed(context, '/list',
-        arguments: {"id": id, "nameUf": nomeUf});
+    Navigator.pushReplacementNamed(context, '/list', arguments: {
+      "id": id,
+      "nameUf": nomeUf,
+      "nome": nome,
+      "id_user": id_user
+    });
   }
 
   @override
@@ -75,6 +88,12 @@ class _WatherState extends State<Wather> {
     if (data != null) {
       FocusScope.of(context).requestFocus(FocusNode());
       setState(() {
+        if (data["id_user"] != null) {
+          id_user = data["id_user"];
+        }
+        if (data["nome"] != null) {
+          nome = data["nome"];
+        }
         if (data["nameCity"] != null) {
           nomeCity = data["nameCity"];
         }
@@ -95,6 +114,38 @@ class _WatherState extends State<Wather> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Container(
+                  margin: const EdgeInsets.only(top: 10.0),
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Icon(
+                            Icons.account_box_rounded,
+                            color: Colors.pink,
+                            size: 24.0,
+                            semanticLabel:
+                                'Text to announce in accessibility modes',
+                          ),
+                          Text(nome),
+                          OutlinedButton(
+                            onPressed: navigateToHistorico,
+                            child: const Text('Histórico'),
+                          ),
+                          // OutlinedButton(
+                          //   onPressed: onPressButton,
+                          //   child: Text('Excluir'),
+                          // )
+                        ],
+                      ),
+                    ),
+                  )),
+              Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: Text(climaNow),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

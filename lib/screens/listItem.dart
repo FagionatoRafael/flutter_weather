@@ -10,6 +10,8 @@ class Lista extends StatelessWidget {
 
   var id = 0;
   var nomeUf = 'SP';
+  var nome = '';
+  var id_user = '';
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +20,27 @@ class Lista extends StatelessWidget {
       print(data);
       id = data["id"];
       nomeUf = data["nameUf"];
+      if (data["nome"] != null) {
+        nome = data["nome"];
+      }
+      if (data["id_user"] != null) {
+        id_user = data["id_user"];
+      }
     }
     return Scaffold(body: buildContainer());
   }
 
   void onPressButton(String name, BuildContext context) {
     if (id == 0) {
-      Navigator.pushReplacementNamed(context, '/wather',
-          arguments: {"nameCity": name, "nameUf": nomeUf});
+      Navigator.pushReplacementNamed(context, '/wather', arguments: {
+        "nameCity": name,
+        "nameUf": nomeUf,
+        "nome": nome,
+        "id_user": id_user
+      });
     } else {
       Navigator.pushReplacementNamed(context, '/wather',
-          arguments: {"nameUf": name});
+          arguments: {"nameUf": name, "nome": nome, "id_user": id_user});
     }
     print(name);
   }

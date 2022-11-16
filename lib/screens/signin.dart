@@ -1,20 +1,19 @@
 import 'package:climabra/api/api.dart';
-import 'package:climabra/screens/signin.dart';
+import 'package:climabra/screens/login.dart';
 import 'package:climabra/screens/weather.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key, required this.title}) : super(key: key);
+class Signin extends StatefulWidget {
+  const Signin({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Signin> createState() => _SigninState();
 }
 
-class _LoginState extends State<Login> {
+class _SigninState extends State<Signin> {
   String nome = '';
-  String id_user = '';
   String senha = '';
   String error = '';
 
@@ -32,14 +31,16 @@ class _LoginState extends State<Login> {
 
   void onPressButton() async {
     if (nome != '' && senha != '') {
-      var res = await API('').getAuthUser(nome, senha);
-
-      if (res != null) {
-        Navigator.pushReplacementNamed(context, '/wather',
-            arguments: {"nome": nome, "id_user": res["_id"]});
+      var res = await API('').getHasUser(nome);
+      if (res == null) {
+        API('').postUser(nome, senha);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => const Login(title: 'isoo'),
+        ));
+        // print(res);
       } else {
         setState(() {
-          error = 'Usuário não existe';
+          error = 'Usuário já existe!';
         });
       }
     } else {
@@ -49,17 +50,11 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void onSignin() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => const Signin(title: 'isoo'),
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Signin'),
       ),
       body: Center(
         child: Padding(
@@ -93,19 +88,9 @@ class _LoginState extends State<Login> {
                 margin: const EdgeInsets.only(top: 10.0),
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    fixedSize: Size(300, 50),
+                    fixedSize: const Size(300, 50),
                   ),
                   onPressed: onPressButton,
-                  child: const Text('Entrar'),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 10.0),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    fixedSize: Size(300, 50),
-                  ),
-                  onPressed: onSignin,
                   child: const Text('Cadastrar'),
                 ),
               ),

@@ -52,9 +52,9 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
-  android: launcher_icon
+  android: "ic_launcher"
   ios: true
-  image_path: assets/icon/icon.png
+  image_path: "assets/icon/icon.png"
 # The following section is specific to Flutter.
 flutter:
 
